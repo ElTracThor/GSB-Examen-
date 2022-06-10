@@ -1,4 +1,6 @@
-﻿<?php
+﻿
+<?php
+//test
 if(!isset($_REQUEST['action'])){
 	$_REQUEST['action'] = 'demandeConnexion';
 }
@@ -23,7 +25,7 @@ switch($action){
 			$prenom = $visiteur['prenom'];
 			$numero = $visiteur['numero'];
 			$voiture = $visiteur['ref_voiture'];
-			$energie = $visiteur['refEnergie'];
+			$energie = $visiteur['libEnergie'];
 			
 			connecter($id,$nom,$prenom,$numero,$voiture,$energie);
 			include("vues/v_sommaire.php");
