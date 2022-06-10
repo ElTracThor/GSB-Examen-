@@ -54,7 +54,9 @@ class PdoGsb{
  * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
 */
 	public function getInfosVisiteur($login, $mdp){
-		$req = "select Visiteur.id as id, Visiteur.nom as nom, Visiteur.prenom as prenom from Visiteur 
+		$req = "select Visiteur.id as id, Visiteur.nom as nom, Visiteur.prenom as prenom, 
+		Visiteur.numero as numero, Visiteur.ref_voiture as ref_voiture, Voiture.refEnergie as refEnergie
+		from Visiteur, Voiture 
 		where Visiteur.login='$login' and Visiteur.mdp='$mdp'";
 		$rs = PdoGsb::$monPdo->query($req);
 		$ligne = $rs->fetch();
@@ -72,7 +74,23 @@ class PdoGsb{
  * @param $mois sous la forme aaaamm
  * @return tous les champs des lignes de frais hors forfait sous la forme d'un tableau associatif 
 */
+	public function getLesFraisHorsForfait($idVisiteur,$mois){
+	    $req = "select * from LigneFraisHorsForfait, Paiement where LigneFraisHorsForfait.idVisiteur ='$idVisiteur' 
+		and LigneFraisHorsForfait.mois = '$mois'  and LigneFraisHorsForfait.ref_paiement=Paiement.code";	
+		$res = PdoGsb::$monPdo->query($req);
+		$lesLignes = $res->fetchAll();
+		$nbLignes = count($lesLignes);
+		for ($i=0; $i<$nbLignes; $i++){
+			$date = $lesLignes[$i]['date'];
+			$lesLignes[$i]['date'] =  dateAnglaisVersFrancais($date);
+		}
+		return $lesLignes; 
+	}
 	
+	public function getLesModes(){
+        return PdoGsb::$monPdo->query("select * from Paiement");
+    }
+
 /**
  * Retourne le nombre de justificatif d'un visiteur pour un mois donné
  
@@ -218,13 +236,21 @@ class PdoGsb{
  * @param $date : la date du frais au format français jj//mm/aaaa
  * @param $montant : le montant
 */
-	
+	public function creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$date,$montant,$paiement){
+		$dateFr = dateFrancaisVersAnglais($date);
+		$req = "insert into LigneFraisHorsForfait, Paiement( idVisiteur, mois, libelle, date, montant, libelleMode) 
+		values('$idVisiteur','$mois','$libelle','$dateFr','$montant','$paiement')";
+		PdoGsb::$monPdo->exec($req);
+	}
 /**
  * Supprime le frais hors forfait dont l'id est passé en argument
  
  * @param $idFrais 
 */
-
+	public function supprimerFraisHorsForfait($idFrais){
+		$req = "delete from LigneFraisHorsForfait where LigneFraisHorsForfait.id =$idFrais ";
+		PdoGsb::$monPdo->exec($req);
+	}
 /**
  * Retourne les mois pour lesquel un visiteur a une fiche de frais
  

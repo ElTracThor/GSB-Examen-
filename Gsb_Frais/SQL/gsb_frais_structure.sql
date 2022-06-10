@@ -99,3 +99,19 @@ CREATE TABLE IF NOT EXISTS `LigneFraisForfait` (
   FOREIGN KEY (`idFraisForfait`) REFERENCES FraisForfait(`id`)
 ) ENGINE=InnoDB;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `LigneFraisHorsForfait`
+--
+
+CREATE TABLE IF NOT EXISTS `LigneFraisHorsForfait` (
+  `id` int(11) NOT NULL auto_increment,
+  `idVisiteur` char(4) NOT NULL,
+  `mois` char(6) NOT NULL,
+  `libelle` varchar(100) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `montant` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (`idVisiteur`, `mois`) REFERENCES FicheFrais(`idVisiteur`, `mois`)
+) ENGINE=InnoDB;

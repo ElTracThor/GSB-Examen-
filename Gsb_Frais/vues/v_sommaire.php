@@ -9,8 +9,22 @@
       </div>  
         <ul id="menuList">
 			<li >
-				  Visiteur :<br>
-				<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
+				  Visiteur :
+				<?php echo $_SESSION['id']."  ".$_SESSION['prenom']."  ".$_SESSION['nom'] ?><li>
+            
+              <p>Numéro de téléphone : 
+                  <?php  echo $_SESSION['numero'] ?><li>
+              
+                  
+              
+              <p>Type de Categorie :  
+                  <?php  echo $_SESSION['libCategorie']  ?><li>
+
+              <p>id Categorie :
+                  <?php  echo $_SESSION['idCategorie']  ?><li>
+
+                  
+
 			</li>
            <li class="smenu">
               <a href="index.php?uc=gererFrais&action=saisirFrais" title="Saisie fiche de frais ">Saisie fiche de frais</a>

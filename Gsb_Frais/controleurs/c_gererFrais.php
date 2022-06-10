@@ -28,15 +28,16 @@ switch($action){
 	  break;
 	}
 	case 'validerCreationFrais':{
-		
+		$dateFrais = $_REQUEST['dateFrais'];
 		$libelle = $_REQUEST['libelle'];
 		$montant = $_REQUEST['montant'];
-		valideInfosFrais($libelle,$montant);
+		$paiement = $_REQUEST['libelleMode'];
+		valideInfosFrais($dateFrais,$libelle,$montant,$paiement);
 		if (nbErreurs() != 0 ){
 			include("vues/v_erreurs.php");
 		}
 		else{
-			$pdo->creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$montant);
+			$pdo->creeNouveauFraisHorsForfait($idVisiteur,$mois,$libelle,$dateFrais,$montant,$paiement);
 		}
 		break;
 	}
@@ -46,8 +47,9 @@ switch($action){
 		break;
 	}
 }
-
+$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur,$mois);
 $lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur,$mois);
+$lesModes = $pdo->getLesModes();
 include("vues/v_listeFraisForfait.php");
 include("vues/v_listeFraisHorsForfait.php");
 

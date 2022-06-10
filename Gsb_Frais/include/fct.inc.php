@@ -20,10 +20,14 @@ function estConnecte(){
  * @param $nom
  * @param $prenom
  */
-function connecter($id,$nom,$prenom){
+function connecter($id,$nom,$prenom,$numero,$voiture,$categorie,$idcategorie){
 	$_SESSION['idVisiteur']= $id; 
 	$_SESSION['nom']= $nom;
 	$_SESSION['prenom']= $prenom;
+	$_SESSION['numero']= $numero;
+	$_SESSION['idCategorie']= $categorie;
+	$_SESSION['libCategorie']= $categorie;
+	
 }
 /**
  * Détruit la session active
@@ -149,8 +153,9 @@ function lesQteFraisValides($lesFrais){
  * @param $dateFrais 
  * @param $libelle 
  * @param $montant
+ * @param $paiement
  */
-function valideInfosFrais($dateFrais,$libelle,$montant){
+function valideInfosFrais($dateFrais,$libelle,$montant,$paiement){
 	if($dateFrais==""){
 		ajouterErreur("Le champ date ne doit pas être vide");
 	}
@@ -169,6 +174,9 @@ function valideInfosFrais($dateFrais,$libelle,$montant){
 	}
 	if($montant == ""){
 		ajouterErreur("Le champ montant ne peut pas être vide");
+	}
+	if($paiement == ""){
+		ajouterErreur("Le champ paiement ne peut pas être vide");
 	}
 	else
 		if( !is_numeric($montant) ){

@@ -32,10 +32,7 @@
 		?>
 		</tr>
     </table>
-  	
-    </table>
-  </div>
-  </div>
+  
  
 
 
